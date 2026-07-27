@@ -1,31 +1,34 @@
 /**
- * Definition for a binary tree node.
- * struct TreeNode {
+ * Definition for singly-linked list.
+ * struct ListNode {
  *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 
 class Solution {
 public:
-    TreeNode* invertTree(TreeNode* root) {
-        if (!root)
-         return nullptr;
-        queue<TreeNode*> queue; 
-        queue.push(root);
-        while(!queue.empty()){
-            TreeNode* node= queue.front();
-            queue.pop();
-            swap(node->left, node->right);
-            if(node-> left)
-                queue.push(node->left);
-            if(node-> right)
-                queue.push(node->right);
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode* cur = head;
+        int group = 0;
+        while (cur != nullptr && group < k) {
+            cur = cur->next;
+            group++;
         }
-        return root;
+
+        if (group == k) {
+            cur = reverseKGroup(cur, k);
+            while (group-- > 0) {
+                ListNode* tmp = head->next;
+                head->next = cur;
+                cur = head;
+                head = tmp;
+            }
+            head = cur;
+        }
+        return head;
     }
 };
